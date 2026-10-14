@@ -4,6 +4,7 @@ from datetime import datetime, date, timedelta, timezone as pythontz
 
 #DATABASE collections
 students = mongo.db.students
+clearances = mongo.db.clearances
 
 
 

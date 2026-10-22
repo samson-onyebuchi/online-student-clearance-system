@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Clearance Portal | Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/student-Interface.css" />
+  </head>
+  <body>
+    <!-- Page Loader -->
+    <div id="pageLoader" class="page-loader">
+      <div class="loader-content">
+        <div class="spinner"></div>
+        <p>Loading Portal...</p>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="portal-layout">
+      <!-- ================= SIDEBAR ================= -->
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="brand-text">
+            <h2>Clearance</h2>
+            <span>Student Portal</span>
+          </div>
+          <button
+            id="sidebarClose"
+            class="sidebar-close-btn"
+            aria-label="Close Sidebar"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="sidebar-student-badge">
+          <i class="fa-solid fa-id-card"></i>
+          <div>
+            <small>Registration No:</small>
+            <p id="sidebarRegNo" class="sidebar-reg">Loading...</p>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <a
+            href="#overview"
+            class="nav-link active"
+            data-section-target="overview"
+          >
+            <i class="fa-solid fa-shapes"></i> Overview
+          </a>
+          <a href="#clearance" class="nav-link" data-section-target="clearance">
+            <i class="fa-solid fa-list-check"></i> My Clearance
+          </a>
+          <a href="#documents" class="nav-link" data-section-target="documents">
+            <i class="fa-solid fa-folder-open"></i> My Documents
+          </a>
+          <a
+            href="#profileDetailsPage"
+            class="nav-link"
+            data-section-target="profileDetailsPage"
+          >
+            <i class="fa-solid fa-user-gear"></i> My Profile
+          </a>
+          <a
+            href="#notifications"
+            class="nav-link"
+            data-section-target="notifications"
+          >
+            <i class="fa-solid fa-bell"></i> Notifications
+          </a>
+          <a
+            href="#changePassword"
+            class="nav-link"
+            data-section-target="changePassword"
+          >
+            <i class="fa-solid fa-shield-keyhole"></i> Change Password
+          </a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <button id="logoutButton" class="logout-btn">
+            <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+          </button>
+        </div>
+      </aside>
+
+      <!-- ================= MAIN CONTENT ================= -->
+      <main class="main-content">
+        <!-- Top Navigation Header -->
+        <header class="top-header">
+          <div class="header-left">
+            <button
+              id="menuToggle"
+              class="menu-toggle-btn"
+              aria-label="Toggle Menu"
+            >
+              <i class="fa-solid fa-bars-staggered"></i>
+            </button>
+            <div class="header-title-area">
+              <h1 id="pageTitle">Dashboard Overview</h1>
+              <p id="pageSubtitle">
+                Manage your final-year sign-out clearance seamlessly.
+              </p>
+            </div>
+          </div>
+          <div class="header-user-area">
+            <div class="date-badge">
+              <i class="fa-regular fa-calendar-days"></i>
+              <span id="currentDate">--</span>
+            </div>
+            <div class="user-profile-pill">
+              <div class="user-avatar"><i class="fa-solid fa-user"></i></div>
+              <span class="header-username" id="headerStudentName"
+                >Student</span
+              >
+            </div>
+          </div>
+        </header>
+
+        <!-- Content Body Area -->
+        <div class="content-body">
+          <!-- 1. OVERVIEW SECTION -->
+          <section
+            id="overview"
+            class="dashboard-section active"
+            data-dashboard-section
+          >
+            <div class="welcome-banner">
+              <div class="banner-text">
+                <span class="badge-pill">Final Year Session</span>
+                <h2>
+                  Welcome back, <span id="welcomeStudentName">Student</span>!
+                </h2>
+                <p>
+                  Your institutional clearance gateway is live. Track
+                  departmental and unit approvals in real-time.
+                </p>
+              </div>
+              <button id="refreshDashboardButton" class="btn btn-glass">
+                <i class="fa-solid fa-rotate"></i> Refresh Sync
+              </button>
+            </div>
+
+            <!-- Statistics Cards Grid -->
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon bg-blue">
+                  <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div class="stat-details">
+                  <span>Overall Status</span>
+                  <h3 id="overallStatus">Not Started</h3>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon bg-amber">
+                  <i class="fa-solid fa-spinner"></i>
+                </div>
+                <div class="stat-details">
+                  <span>Current Stage</span>
+                  <h3 id="currentStageName">Awaiting Start</h3>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon bg-emerald">
+                  <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="stat-details">
+                  <span>Approved Stages</span>
+                  <h3 id="approvedStages">0</h3>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon bg-purple">
+                  <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <div class="stat-details">
+                  <span>Pending Reviews</span>
+                  <h3 id="pendingReviews">0</h3>
+                </div>
+              </div>
+            </div>
+
+            <!-- Progress & Activity Row -->
+            <div class="dashboard-grid-row">
+              <div class="card progress-card">
+                <div class="card-header-flex">
+                  <h3>
+                    <i class="fa-solid fa-chart-line"></i> Clearance Progress
+                  </h3>
+                  <span
+                    id="overallProgressPercentage"
+                    class="progress-pill-badge"
+                    >0%</span
+                  >
+                </div>
+                <div class="progress-bar-container">
+                  <div class="progress-info-row">
+                    <span id="completedStages">0 stages completed</span>
+                    <small id="totalStages">8 stages in total</small>
+                  </div>
+                  <div class="progress-track">
+                    <div
+                      id="overallProgressFill"
+                      class="progress-fill"
+                      style="width: 0%"
+                    ></div>
+                  </div>
+                </div>
+                <div class="action-box">
+                  <div class="action-box-content">
+                    <h4 id="stageActionTitle">Ready to begin?</h4>
+                    <p id="stageActionDescription">
+                      Start your final-year clearance to initialize your
+                      workflow.
+                    </p>
+                  </div>
+                  <div class="action-box-buttons">
+                    <button id="startClearanceButton" class="btn btn-primary">
+                      <i class="fa-solid fa-play"></i> Start Clearance
+                    </button>
+                    <button
+                      id="currentStageActionButton"
+                      class="btn btn-primary"
+                      hidden
+                    >
+                      <i class="fa-solid fa-cloud-arrow-up"></i> Upload to
+                      Current Stage
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card activity-card">
+                <div class="card-header-flex">
+                  <h3><i class="fa-solid fa-bolt"></i> Recent Activity</h3>
+                  <button id="refreshActivityButton" class="btn-text">
+                    Refresh
+                  </button>
+                </div>
+                <div id="recentActivity" class="activity-list">
+                  <div class="empty-state">
+                    <i class="fa-regular fa-clock"></i>
+                    <p>Your recent system activity will appear here.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 2. MY CLEARANCE SECTION -->
+          <section
+            id="clearance"
+            class="dashboard-section"
+            data-dashboard-section
+            hidden
+          >
+            <div class="clearance-header-card card">
+              <div class="flex-between">
+                <div>
+                  <h2>Institutional Clearance Checkpoints</h2>
+                  <p>
+                    Progress through all 8 official university verification
+                    stages sequentially.
+                  </p>
+                </div>
+                <span
+                  id="clearanceStatusBadge"
+                  class="status-badge status-pending"
+                  >Not Started</span
+                >
+              </div>
+              <div class="progress-track mt-4">
+                <div
+                  id="progressPercentage"
+                  class="progress-fill"
+                  style="width: 0%"
+                ></div>
+              </div>
+              <p id="currentStageDescription" class="mt-2 text-muted">
+                Initialize your clearance to unlock stage progression.
+              </p>
+            </div>
+
+            <!-- 8 Stage Cards -->
+            <div class="stages-grid">
+              <div class="stage-card card" data-stage="department">
+                <div class="stage-card-header">
+                  <h4>Department</h4>
+                  <span class="stage-badge" data-stage-status>Not Started</span>
+                </div>
+                <p>
+                  Departmental sign-out verification and clearance form check.
+                </p>
+                <button class="btn btn-sm btn-outline mt-2">
+                  <i class="fa-solid fa-eye"></i> View Stage
+                </button>
+              </div>
+              <div class="stage-card card" data-stage="finance">
+                <div class="stage-card-header">
+                  <h4>Finance</h4>
+                  <span class="stage-badge" data-stage-status>Not Started</span>
+                </div>
+                <p>School fees receipts and financial obligations audit.</p>
+                <button class="btn btn-sm btn-outline mt-2">
+                  <i class="fa-solid fa-eye"></i> View Stage
+                </button>
+              </div>
+              <div class="stage-card card" data-stage="library">
+                <div class="stage-card-header">
+                  <h4>Library</h4>
+                  <span class="stage-badge" data-stage-status>Not Started</span>
+                </div>
+                <p>
+                  University library books return and outstanding fines
+                  verification.
+                </p>
+                <button class="btn btn-sm btn-outline mt-2">
+                  <i class="fa-solid fa-eye"></i> View Stage
+                </button>
+              </div>
+              <div class="stage-card card" data-stage="alumni">
+                <div class="stage-card-header">
+                  <h4>Alumni</h4>
+                  <span class="stage-badge" data-stage-status>Not Started</span>
+                </div>
+                <p>Alumni association registration and dues clearance.</p>
+                <button class="btn btn-sm btn-outline mt-2">
+                  <i class="fa-solid fa-eye"></i> View Stage
+                </button>
+              </div>
+              <div class="stage-card card" data-stage="student_affairs">
+                <div class="stage-card-header">
+                  <h4>Student Affairs</h4>
+                  <span class="stage-badge" data-stage-status>Not Started</span>
+                </div>
+                <p>
+                  Student affairs conduct record and hostel clearance check.
+                </p>
+                <button class="btn btn-sm btn-outline mt-2">
+                  <i class="fa-solid fa-eye"></i> View Stage
+                </button>
+              </div>
+              <div class="stage-card card" data-stage="health">
+                <div class="stage-card-header">
+                  <h4>Health</h4>
+                  <span class="stage-badge" data-stage-status>Not Started</span>
+                </div>
+                <p>University medical center health card clearance check.</p>
+                <button class="btn btn-sm btn-outline mt-2">
+                  <i class="fa-solid fa-eye"></i> View Stage
+                </button>
+              </div>
+              <div class="stage-card card" data-stage="security">
+                <div class="stage-card-header">
+                  <h4>Security</h4>
+                  <span class="stage-badge" data-stage-status>Not Started</span>
+                </div>
+                <p>Campus security unit and ID card return sign-off.</p>
+                <button class="btn btn-sm btn-outline mt-2">
+                  <i class="fa-solid fa-eye"></i> View Stage
+                </button>
+              </div>
+              <div class="stage-card card" data-stage="audit">
+                <div class="stage-card-header">
+                  <h4>Audit</h4>
+                  <span class="stage-badge" data-stage-status>Not Started</span>
+                </div>
+                <p>
+                  Final institutional audit clearance stamp and verification.
+                </p>
+                <button class="btn btn-sm btn-outline mt-2">
+                  <i class="fa-solid fa-eye"></i> View Stage
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <!-- 3. MY DOCUMENTS SECTION -->
+          <section
+            id="documents"
+            class="dashboard-section"
+            data-dashboard-section
+            hidden
+          >
+            <div class="card mb-4">
+              <h3>
+                <i class="fa-solid fa-file-arrow-up"></i> Upload Clearance
+                Document
+              </h3>
+              <p>
+                Submit required documents for your active clearance stage (PDF,
+                DOC, DOCX up to 10MB).
+              </p>
+
+              <form id="documentUploadForm" class="upload-form mt-3">
+                <div id="uploadMessage" class="form-message" hidden></div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="documentStage">Clearance Stage</label>
+                    <select id="documentStage" class="form-control" required>
+                      <option value="department">Department</option>
+                      <option value="finance">Finance</option>
+                      <option value="library">Library</option>
+                      <option value="alumni">Alumni</option>
+                      <option value="student_affairs">Student Affairs</option>
+                      <option value="health">Health</option>
+                      <option value="security">Security</option>
+                      <option value="audit">Audit</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="documentName"
+                      >Document Name (e.g. School Fees Receipt)</label
+                    >
+                    <input
+                      type="text"
+                      id="documentName"
+                      class="form-control"
+                      placeholder="Enter human-readable title"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group mt-3">
+                  <label for="documentFile">Select File Document</label>
+                  <div class="file-drop-box">
+                    <input
+                      type="file"
+                      id="documentFile"
+                      class="form-control-file"
+                      accept=".pdf,.doc,.docx"
+                      required
+                    />
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span id="selectedFileName"
+                      >Choose a PDF, DOC, or DOCX file (Max 10MB)</span
+                    >
+                  </div>
+                </div>
+
+                <p id="stageUploadHelp" class="text-info mt-3">
+                  Checking upload eligibility...
+                </p>
+
+                <div class="form-actions mt-4">
+                  <button
+                    type="submit"
+                    id="uploadDocumentButton"
+                    class="btn btn-primary"
+                    disabled
+                  >
+                    <i class="fa-solid fa-upload"></i> Upload Document
+                  </button>
+                  <button
+                    type="reset"
+                    id="resetDocumentFormButton"
+                    class="btn btn-secondary"
+                  >
+                    Reset Form
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <div class="card-header-flex">
+                <h3>
+                  <i class="fa-solid fa-folder-tree"></i> Uploaded Documents
+                  (<span id="totalDocuments">0</span>)
+                </h3>
+                <button
+                  id="refreshDocumentsButton"
+                  class="btn btn-secondary btn-sm"
+                >
+                  <i class="fa-solid fa-rotate"></i> Refresh List
+                </button>
+              </div>
+              <div class="table-responsive mt-3">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Document Name</th>
+                      <th>Stage</th>
+                      <th>Type</th>
+                      <th>Uploaded Date</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="documentsTableBody">
+                    <tr>
+                      <td colspan="6" class="table-empty">
+                        No documents found for this stage.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!-- 4. MY PROFILE SECTION -->
+          <section
+            id="profileDetailsPage"
+            class="dashboard-section"
+            data-dashboard-section
+            hidden
+          >
+            <div class="card profile-card-details">
+              <div class="profile-header-banner">
+                <div class="profile-avatar-large">
+                  <i class="fa-solid fa-user-graduate"></i>
+                </div>
+                <div>
+                  <h3>Student Profile Information</h3>
+                  <p>
+                    Verified academic and personal records registered on the
+                    server.
+                  </p>
+                </div>
+              </div>
+              <div class="profile-grid mt-4">
+                <div class="profile-item">
+                  <label>Full Name</label>
+                  <p id="profileFullName">Not available</p>
+                </div>
+                <div class="profile-item">
+                  <label>Registration Number</label>
+                  <p id="profileRegistrationNumber">Not available</p>
+                </div>
+                <div class="profile-item">
+                  <label>Email Address</label>
+                  <p id="profileEmail">Not available</p>
+                </div>
+                <div class="profile-item">
+                  <label>Phone Number</label>
+                  <p id="profilePhone">Not available</p>
+                </div>
+                <div class="profile-item">
+                  <label>Department</label>
+                  <p id="profileDepartment">Not available</p>
+                </div>
+                <div class="profile-item">
+                  <label>Faculty</label>
+                  <p id="profileFaculty">Not available</p>
+                </div>
+                <div class="profile-item">
+                  <label>Gender</label>
+                  <p id="profileGender">Not available</p>
+                </div>
+                <div class="profile-item">
+                  <label>Student Status</label>
+                  <p id="profileStudentCategory">Not available</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 5. NOTIFICATIONS SECTION -->
+          <section
+            id="notifications"
+            class="dashboard-section"
+            data-dashboard-section
+            hidden
+          >
+            <div class="card">
+              <h3>
+                <i class="fa-solid fa-bell"></i> Notifications & Clearance
+                Updates
+              </h3>
+              <div id="notificationsList" class="notifications-list mt-3">
+                <div class="empty-state">
+                  <i class="fa-regular fa-bell-slash"></i>
+                  <p>
+                    No notifications are currently available. Check your email
+                    for official updates.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 6. CHANGE PASSWORD SECTION -->
+          <section
+            id="changePassword"
+            class="dashboard-section"
+            data-dashboard-section
+            hidden
+          >
+            <div class="card max-w-lg">
+              <h3><i class="fa-solid fa-key"></i> Change Account Password</h3>
+              <p>
+                Ensure your portal account remains secure by updating your
+                password regularly.
+              </p>
+
+              <form id="changePasswordForm" class="mt-4">
+                <div id="passwordMessage" class="form-message" hidden></div>
+
+                <div class="form-group">
+                  <label for="currentPassword">Current Password</label>
+                  <div class="password-input-group">
+                    <input
+                      type="password"
+                      id="currentPassword"
+                      class="form-control"
+                      required
+                    />
+                    <button
+                      type="button"
+                      class="toggle-password"
+                      data-password-target="currentPassword"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="newPassword"
+                    >New Password (Min 8 Characters)</label
+                  >
+                  <div class="password-input-group">
+                    <input
+                      type="password"
+                      id="newPassword"
+                      class="form-control"
+                      required
+                      minlength="8"
+                    />
+                    <button
+                      type="button"
+                      class="toggle-password"
+                      data-password-target="newPassword"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="confirmNewPassword">Confirm New Password</label>
+                  <div class="password-input-group">
+                    <input
+                      type="password"
+                      id="confirmNewPassword"
+                      class="form-control"
+                      required
+                      minlength="8"
+                    />
+                    <button
+                      type="button"
+                      class="toggle-password"
+                      data-password-target="confirmNewPassword"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  id="changePasswordButton"
+                  class="btn btn-primary mt-3"
+                >
+                  <i class="fa-solid fa-shield-check"></i> Update Password
+                </button>
+              </form>
+            </div>
+          </section>
+        </div>
+
+        <!-- Footer -->
+        <main-footer class="main-footer">
+          <p>
+            &copy; <span id="footerYear">2026</span> Student Clearance Portal —
+            Local Environment. All rights reserved.
+          </p>
+        </main-footer>
+      </main>
+    </div>
+
+    <!-- JavaScript Link -->
+    <script src="js/student-Interface.js"></script>
+  </body>
+</html>
